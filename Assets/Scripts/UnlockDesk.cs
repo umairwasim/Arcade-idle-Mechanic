@@ -7,13 +7,13 @@ using UnityEngine.UI;
 public class UnlockDesk : MonoBehaviour
 {
     [SerializeField] private GameObject unlockProgressObj;
-       [SerializeField] private GameObject newDesk;
-       [SerializeField] private Image progressBar;
-       [SerializeField] private TextMeshProUGUI dollarAmount;
-       [SerializeField] private int deskPrice,deskRemainPrice;
-       [SerializeField] private float ProgressValue;
-       public NavMeshSurface buildNavMesh;
-    
+    [SerializeField] private GameObject newDesk;
+    [SerializeField] private Image progressBar;
+    [SerializeField] private TextMeshProUGUI dollarAmount;
+    [SerializeField] private int deskPrice, deskRemainPrice;
+    [SerializeField] private float ProgressValue;
+    public NavMeshSurface buildNavMesh;
+
     void Start()
     {
         dollarAmount.text = deskPrice.ToString("C0");
@@ -24,7 +24,7 @@ public class UnlockDesk : MonoBehaviour
     {
         if (other.CompareTag("Player") && PlayerPrefs.GetInt("dollar") > 0)
         {
-            ProgressValue = Mathf.Abs(1f - CalculateMoney() / deskPrice) ;
+            ProgressValue = Mathf.Abs(1f - CalculateMoney() / deskPrice);
 
             if (PlayerPrefs.GetInt("dollar") >= deskPrice)
             {
@@ -50,9 +50,9 @@ public class UnlockDesk : MonoBehaviour
 
                 desk.transform.DOScale(1.1f, 1f).SetEase(Ease.OutElastic);
                 desk.transform.DOScale(1f, 1f).SetDelay(1.1f).SetEase(Ease.OutElastic);
-                
+
                 unlockProgressObj.SetActive(false);
-                
+
                 buildNavMesh.BuildNavMesh();
             }
 
