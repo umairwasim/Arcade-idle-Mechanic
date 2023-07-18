@@ -9,7 +9,7 @@ public class Printer : MonoBehaviour
    [SerializeField] private Transform[] PapersPlace = new Transform[10];
    [SerializeField] private GameObject paper;
    public float PaperDeliveryTime,YAxis;
-   public int CountPapers;
+   public int CountPapers;  
     void Start()
     {
         for (int i = 0; i < PapersPlace.Length; i++)
