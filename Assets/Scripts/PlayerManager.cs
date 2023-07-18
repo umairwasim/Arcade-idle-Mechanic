@@ -22,7 +22,7 @@ public class PlayerManager : MonoBehaviour
     {
         Cam = Camera.main;
         PlrAnim = GetComponent<Animator>();
-        
+
         papers.Add(paperPlace);
 
         PlayerManagerInstance = this;
@@ -36,7 +36,7 @@ public class PlayerManager : MonoBehaviour
             Plane plane = new Plane(Vector3.up, transform.position);
             Ray ray = Cam.ScreenPointToRay(Input.mousePosition);
 
-            if (plane.Raycast(ray,out var distance))
+            if (plane.Raycast(ray, out var distance))
                 direction = ray.GetPoint(distance);
 
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(direction.x, 0f, direction.z),
@@ -53,23 +53,23 @@ public class PlayerManager : MonoBehaviour
         {
             if (papers.Count > 1)
             {
-                PlrAnim.SetBool("carry",false);
-                PlrAnim.SetBool("RunWithPapers",true);
+                PlrAnim.SetBool("carry", false);
+                PlrAnim.SetBool("RunWithPapers", true);
             }
             else
             {
-                PlrAnim.SetBool("run",true);
+                PlrAnim.SetBool("run", true);
             }
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            PlrAnim.SetBool("run",false);
+            PlrAnim.SetBool("run", false);
 
             if (papers.Count > 1)
             {
-                PlrAnim.SetBool("carry",true);
-                PlrAnim.SetBool("RunWithPapers",false);
+                PlrAnim.SetBool("carry", true);
+                PlrAnim.SetBool("RunWithPapers", false);
             }
 
         }
@@ -80,33 +80,34 @@ public class PlayerManager : MonoBehaviour
             {
                 var firstPaper = papers.ElementAt(i - 1);
                 var secondPaper = papers.ElementAt(i);
-                
-                secondPaper.position = new Vector3(Mathf.Lerp(secondPaper.position.x,firstPaper.position.x,Time.deltaTime * 15f),
-                Mathf.Lerp(secondPaper.position.y,firstPaper.position.y + 0.17f,Time.deltaTime * 15f),firstPaper.position.z);
+
+                secondPaper.position = new Vector3(Mathf.Lerp(secondPaper.position.x, firstPaper.position.x, Time.deltaTime * 15f),
+                Mathf.Lerp(secondPaper.position.y, firstPaper.position.y + 0.17f, Time.deltaTime * 15f), firstPaper.position.z);
             }
         }
 
-        if (Physics.Raycast(transform.position,transform.forward,out var hit,1f))
+        if (Physics.Raycast(transform.position, transform.forward, out var hit, 1f))
         {
-            Debug.DrawRay(transform.position,transform.forward * 1f,Color.green);
-            
+            Debug.DrawRay(transform.position, transform.forward * 1f, Color.green);
+
             if (hit.collider.CompareTag("table") && papers.Count < 21)
             {
-                if (hit.collider.transform.childCount > 2)
+                var table = hit.collider.transform;
+                if (table.childCount > 2)
                 {
                     var paper = hit.collider.transform.GetChild(1);
-                    paper.rotation = Quaternion.Euler(paper.rotation.x,Random.Range(0f,180f),paper.rotation.z);
+                    paper.rotation = Quaternion.Euler(paper.rotation.x, Random.Range(0f, 180f), paper.rotation.z);
                     papers.Add(paper);
                     paper.parent = null;
 
-                    if (hit.collider.transform.parent.GetComponent<Printer>().CountPapers > 1)
-                        hit.collider.transform.parent.GetComponent<Printer>().CountPapers--;
+                    if (table.parent.GetComponent<Printer>().CountPapers > 1)
+                        table.parent.GetComponent<Printer>().CountPapers--;
 
-                    if (hit.collider.transform.parent.GetComponent<Printer>().YAxis > 0f)
-                        hit.collider.transform.parent.GetComponent<Printer>().YAxis -= 0.17f;
+                    if (table.parent.GetComponent<Printer>().YAxis > 0f)
+                        table.parent.GetComponent<Printer>().YAxis -= 0.17f;
 
-                    PlrAnim.SetBool("carry",true);
-                    PlrAnim.SetBool("run",false);
+                    PlrAnim.SetBool("carry", true);
+                    PlrAnim.SetBool("run", false);
                 }
             }
 
@@ -139,15 +140,15 @@ public class PlayerManager : MonoBehaviour
 
                 if (papers.Count <= 1)
                 {
-                    PlrAnim.SetBool("idle",true);
-                    PlrAnim.SetBool("RunWithPapers",false);
+                    PlrAnim.SetBool("idle", true);
+                    PlrAnim.SetBool("RunWithPapers", false);
                 }
-                
+
             }
         }
         else
         {
-            Debug.DrawRay(transform.position,transform.forward * 1f,Color.red);
+            Debug.DrawRay(transform.position, transform.forward * 1f, Color.red);
 
         }
     }
@@ -162,8 +163,8 @@ public class PlayerManager : MonoBehaviour
         if (other.CompareTag("dollar"))
         {
             Destroy(other.gameObject);
-            
-            PlayerPrefs.SetInt("dollar",PlayerPrefs.GetInt("dollar") + 5);
+
+            PlayerPrefs.SetInt("dollar", PlayerPrefs.GetInt("dollar") + 5);
 
             MoneyCounter.text = PlayerPrefs.GetInt("dollar").ToString("C0");
         }
@@ -174,23 +175,23 @@ public class PlayerManager : MonoBehaviour
     {
         if (other.CompareTag("pp"))
         {
-           // PlrAnim.SetBool("carry",false);
-            PlrAnim.SetBool("RunWithPapers",false);
-            PlrAnim.SetBool("idle",false);
-            PlrAnim.SetBool("run",true);
+            // PlrAnim.SetBool("carry",false);
+            PlrAnim.SetBool("RunWithPapers", false);
+            PlrAnim.SetBool("idle", false);
+            PlrAnim.SetBool("run", true);
             delay = 0f;
         }
-        
+
         if (other.CompareTag("table"))
         {
             if (papers.Count > 1)
             {
-                PlrAnim.SetBool("carry",false);
-                PlrAnim.SetBool("RunWithPapers",true);
+                PlrAnim.SetBool("carry", false);
+                PlrAnim.SetBool("RunWithPapers", true);
             }
             else
             {
-                PlrAnim.SetBool("run",true);
+                PlrAnim.SetBool("run", true);
             }
         }
     }
